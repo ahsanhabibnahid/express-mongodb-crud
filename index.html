@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Node Js and MongoDB working</h1>
+    <form action="/addProduct" method="post">
+        <input type="text" placeholder="product name" name="name">
+        <br>
+        <input type="text" placeholder="price" name="price">
+        <br>
+        <input type="text" placeholder="quantity" name="quantity">
+        <br>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <div id="product">
+
+    </div>
+
+    <script>
+        fetch('/products')
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('product')
+            data.forEach(product => {
+                const paragraph = document.createElement('p')
+                paragraph.innerHTML = `
+                ${product.name}, price : ${product.price}, quantity : ${product.quantity}
+                <button onclick="deleteProduct('${product._id}')">delete</button>
+                `
+                container.appendChild(paragraph)
+            })
+            console.log(data)
+        })
+
+
+        const deleteProduct = (id) => {
+            fetch(`/delete/${id}`,{
+                method:'DELETE'
+            })
+            .then(res => res.json())
+            .then(result => {
+                console.log('delete successfully')
+            })
+        }
+    </script>
+</body>
+</html>
