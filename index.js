@@ -27,6 +27,14 @@ client.connect(err => {
         })
     })
 
+    //get single product
+    app.get('/product/:id', (req, res) => {
+        collection.find({_id: ObjectId(req.params.id)})
+        .toArray((err, documents) => {
+            res.send(documents[0])
+        })
+    })
+
     //post data
     app.post('/addProduct', (req, res) => {
         const product = req.body
